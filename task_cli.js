@@ -147,6 +147,29 @@ switch (command) {
     }
 
     break;
+
+  case "delete":
+    if (args.length > 2 || !parseInt(args[1])) {
+      console.log(
+        "Invalid inputs for delete.\n Usage: node task_cli.js delete <id>"
+      );
+      process.exit(1);
+    }
+
+    let currentTaskData = await readFileData("tasks.json");
+    currentTaskData = JSON.parse(currentTaskData);
+
+    const deleteDataAtIndex = currentTaskData.findIndex(
+      (task) => task.id === parseInt(args[1])
+    );
+
+    currentTaskData.splice(deleteDataAtIndex, 1);
+
+    await writeToFile("tasks.json", JSON.stringify(currentTaskData));
+    console.log(`Task with id:${args[1]} deleted successfully`);
+
+    break;
+
   default:
     console.log("Invalid command type");
     break;
