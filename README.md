@@ -1,4 +1,4 @@
-# Task Manager CLI
+# Task Tracker CLI
 
 A command-line interface (CLI) application for managing tasks. Store and manage your tasks with simple commands, including adding, listing, updating, marking status, and deleting tasks. Data is persisted in a `tasks.json` file.
 
