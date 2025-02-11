@@ -49,6 +49,38 @@ switch (command) {
     await writeToFile("tasks.json", JSON.stringify(tasks));
     console.log("Tasks: ", tasks);
     break;
+
+  case "list":
+    if (args.length > 2) {
+      console.log(
+        "Invalid inputs for list.\n Usage: node task_cli.js list <done, todo, in-progress>"
+      );
+      process.exit(1);
+    }
+
+    let allTasks = await readFileData("tasks.json");
+    allTasks = JSON.parse(allTasks);
+
+    if (!args[1]) {
+      console.log("All Tasks\n", allTasks);
+    } else if (args[1] === "done") {
+      const allDoneTasks = allTasks.filter((task) => task.status == "done");
+      console.log("All Done Tasks\n", allDoneTasks);
+    } else if (args[1] === "todo") {
+      const allTodoTasks = allTasks.filter((task) => task.status == "todo");
+      console.log("All Todo Tasks\n", allTodoTasks);
+    } else if (args[1] === "in-progress") {
+      const allTasksInProgress = allTasks.filter(
+        (task) => task.status == "in-progress"
+      );
+      console.log("All Tasks in Progress\n", allTasksInProgress);
+    } else {
+      console.log(
+        "Invalid inputs for list.\n Usage: node task_cli.js list <done, todo, in-progress>"
+      );
+    }
+    break;
+
   default:
     console.log("Invalid command type");
     break;
