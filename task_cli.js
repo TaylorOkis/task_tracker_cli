@@ -87,19 +87,66 @@ switch (command) {
       console.log(
         "Invalid inputs for update.\n Usage: node task_cli.js update <id> <description>"
       );
+      process.exit(1);
     }
     let currentTasks = await readFileData("tasks.json");
     currentTasks = JSON.parse(currentTasks);
 
-    const updatedData = currentTasks.map((task) =>
-      task.id == parseInt(args[1]) ? { ...task, description: args[2] } : task
+    const dataIndex = currentTasks.findIndex(
+      (task) => task.id === parseInt(args[1])
     );
 
-    await writeToFile("tasks.json", JSON.stringify(updatedData));
+    if (dataIndex === -1) {
+      console.log(`Task with id:${args[1]} deos not exists`);
+      process.exit(1);
+    }
+
+    currentTasks[dataIndex] = {
+      ...currentTasks[dataIndex],
+      description: args[2],
+    };
+
+    await writeToFile("tasks.json", JSON.stringify(currentTasks));
     console.log(`Task ${args[1]} updated successfully`);
-    console.log("All Tasks\n", updatedData);
+    console.log("Tasks\n", currentTasks[dataIndex]);
     break;
 
+  case "mark":
+    if (!parseInt(args[1])) {
+      console.log(
+        "Invalid inputs for mark.\n Usage: node task_cli.js mark <id> <done, in-progress>"
+      );
+      process.exit(1);
+    }
+
+    let currentTask = await readFileData("tasks.json");
+    currentTask = JSON.parse(currentTask);
+
+    if (args[2] === "done" || args[2] == "in-progress") {
+      const dataIndex = currentTask.findIndex(
+        (task) => task.id === parseInt(args[1])
+      );
+
+      if (dataIndex === -1) {
+        console.log(`Task with id:${args[1]} deos not exists`);
+        process.exit(1);
+      }
+
+      currentTask[dataIndex] = {
+        ...currentTask[dataIndex],
+        status: args[2],
+      };
+
+      await writeToFile("tasks.json", JSON.stringify(currentTask));
+      console.log(`Task ${args[1]} updated successfully`);
+      console.log("Task\n", currentTask[dataIndex]);
+    } else {
+      console.log(
+        "Invalid inputs for mark.\n Usage: node task_cli.js mark <id> <done, in-progress>"
+      );
+    }
+
+    break;
   default:
     console.log("Invalid command type");
     break;
