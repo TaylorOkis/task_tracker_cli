@@ -4,9 +4,7 @@ import { readFileData, writeToFile } from "./helper.js";
 const args = process.argv.slice(2);
 
 if (args.length > 3) {
-  console.log(
-    "Usage: node task_cli.js <command> <id/data> <data> (last argument for update use case)"
-  );
+  console.log("Usage: node task_cli.js <command> <id/data> <data>");
   process.exit(1);
 }
 
