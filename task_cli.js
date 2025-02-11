@@ -47,6 +47,7 @@ switch (command) {
     tasks.push(task);
 
     await writeToFile("tasks.json", JSON.stringify(tasks));
+    console.log("Task saved successfully");
     console.log("Tasks: ", tasks);
     break;
 
@@ -79,6 +80,24 @@ switch (command) {
         "Invalid inputs for list.\n Usage: node task_cli.js list <done, todo, in-progress>"
       );
     }
+    break;
+
+  case "update":
+    if (!parseInt(args[1])) {
+      console.log(
+        "Invalid inputs for update.\n Usage: node task_cli.js update <id> <description>"
+      );
+    }
+    let currentTasks = await readFileData("tasks.json");
+    currentTasks = JSON.parse(currentTasks);
+
+    const updatedData = currentTasks.map((task) =>
+      task.id == parseInt(args[1]) ? { ...task, description: args[2] } : task
+    );
+
+    await writeToFile("tasks.json", JSON.stringify(updatedData));
+    console.log(`Task ${args[1]} updated successfully`);
+    console.log("All Tasks\n", updatedData);
     break;
 
   default:

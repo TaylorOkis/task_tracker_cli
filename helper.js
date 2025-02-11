@@ -12,7 +12,6 @@ async function readFileData(filePath) {
 async function writeToFile(filePath, data) {
   try {
     await fs.writeFile(filePath, data);
-    console.log("Write operation successful");
   } catch (error) {
     throw new Error("An error occured while writing to file");
   }
