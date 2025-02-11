@@ -5,7 +5,9 @@ async function readFileData(filePath) {
     let data = await fs.readFile(filePath);
     return data.toString().trim();
   } catch (error) {
-    throw new Error("An error occurred while reading file");
+    await writeToFile(filePath, "");
+    let newData = await fs.readFile(filePath);
+    return newData.toString().trim();
   }
 }
 
